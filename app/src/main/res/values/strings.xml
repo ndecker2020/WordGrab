@@ -6,6 +6,12 @@
     <string name="hint">Hint</string>
     <string name="team_1_points">TEAM 1: Points</string>
     <string name="team_2_points">TEAM 2: Points</string>
+    <string name="create_list">Create a List</string>
+    <string name="category_name">Category</string>
+    <string name="enter_word">Enter a Word</string>
+    <string name="submit_word">Submit Word!</string>
+    <string name="instructions_word">Instructions</string>
+    <string name="instructions_details">This is the Instructions. Try not to screw it up.\nDoes that work\nTest</string>
 
     <string-array name="numPlayers">
         <item>2</item>
