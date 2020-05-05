@@ -8,8 +8,7 @@
         android:summary="Time for each round."
         android:defaultValue="30"
         android:inputType="number"
-        android:text="30"
-        />
+        android:text="30"/>
 
     <SwitchPreference
         app:key="shakeToSkip"

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/mainFragment">
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.ndecker.android.wordgrab.ui.main.MainFragment"
+        android:label="main_fragment"
+        tools:layout="@layout/main_fragment" >
+        <action
+            android:id="@+id/action_mainFragment_to_gameFragment"
+            app:destination="@id/gameFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_customListFragment"
+            app:destination="@id/customListFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_instructions2"
+            app:destination="@id/instructions2" />
+    </fragment>
+    <fragment
+        android:id="@+id/gameFragment"
+        android:name="com.ndecker.android.wordgrab.gameUi.GameFragment"
+        android:label="GameFragment" />
+    <fragment
+        android:id="@+id/customListFragment"
+        android:name="com.ndecker.android.wordgrab.customList.CustomListFragment"
+        android:label="custom_list_fragment"
+        tools:layout="@layout/custom_list_fragment" />
+    <activity
+        android:id="@+id/instructions2"
+        android:name="com.ndecker.android.wordgrab.Instructions"
+        android:label="activity_instructions"
+        tools:layout="@layout/activity_instructions" />
+</navigation>
