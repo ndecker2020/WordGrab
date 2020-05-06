@@ -12,7 +12,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="64dp"
-        android:text="WordGrab"
+        android:text="@string/title_name"
         android:textAlignment="center"
         android:textSize="36sp"
         android:textStyle="bold"
@@ -36,20 +36,20 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:height="50dp"
-            android:text="Play" />
+            android:text="@string/play_button" />
 
         <Button
             android:id="@+id/settingsButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="Settings" />
+            android:text="@string/settings_button" />
 
         <Button
             android:id="@+id/customListButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Create A List" />
+            android:text="@string/create_a_list_button" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -62,7 +62,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="# of Players" />
+                android:text="@string/number_of_players" />
 
             <Spinner
                 android:id="@+id/playersSpinner"
@@ -82,7 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Category" />
+                android:text="@string/category_spinner" />
 
             <Spinner
                 android:id="@+id/categorySpinner"

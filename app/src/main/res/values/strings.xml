@@ -12,13 +12,11 @@
     <string name="submit_word">Submit Word!</string>
     <string name="instructions_word">Instructions</string>
     <string name="instructions_details">This is the Instructions. Try not to screw it up.\nDoes that work\nTest</string>
+    <string name="title_name">WordGrab</string>
+    <string name="play_button">Play</string>
+    <string name="settings_button">Settings</string>
+    <string name="create_a_list_button">Create A List</string>
+    <string name="number_of_players"># of Players</string>
+    <string name="category_spinner">Category</string>
 
-    <string-array name="numPlayers">
-        <item>2</item>
-        <item>4</item>
-        <item>6</item>
-        <item>8</item>
-        <item>10</item>
-        <item>12</item>
-    </string-array>
 </resources>
