@@ -74,6 +74,7 @@ class MainFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         //number of players changed
+        view ?: return
         when(parent){
             playersSpinner ->
                 Toast.makeText(requireContext(), "${players[position]} Players", Toast.LENGTH_SHORT).show()
