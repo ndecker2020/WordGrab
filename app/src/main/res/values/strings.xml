@@ -11,7 +11,7 @@
     <string name="enter_word">Enter a Word</string>
     <string name="submit_word">Submit Word!</string>
     <string name="instructions_word">Instructions</string>
-    <string name="instructions_details">This is the Instructions. Try not to screw it up.\nDoes that work\nTest</string>
+    <string name="instructions_details">This is the Instructions. Try not to screw it up and testing this to see f it goes over the box.\nDoes that work\nTest</string>
 
     <string-array name="numPlayers">
         <item>2</item>
