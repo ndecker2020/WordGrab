@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_mainFragment_to_instructions2"
             app:destination="@id/instructions2" />
+        <action
+            android:id="@+id/action_mainFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
     <fragment
         android:id="@+id/gameFragment"
@@ -34,4 +37,8 @@
         android:name="com.ndecker.android.wordgrab.Instructions"
         android:label="activity_instructions"
         tools:layout="@layout/activity_instructions" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.ndecker.android.wordgrab.ui.settings.SettingsFragment"
+        android:label="SettingsFragment" />
 </navigation>
