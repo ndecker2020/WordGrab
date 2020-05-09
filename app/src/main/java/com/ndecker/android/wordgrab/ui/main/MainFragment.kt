@@ -8,7 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.ndecker.android.wordgrab.Category
 import com.ndecker.android.wordgrab.R
 
 class MainFragment : Fragment(), AdapterView.OnItemSelectedListener{
@@ -48,9 +50,21 @@ class MainFragment : Fragment(), AdapterView.OnItemSelectedListener{
         return view
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.categoriesLiveData.observe(viewLifecycleOwner,
+            Observer<List<Category>> {
+                categorySpinner.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, it)
+            })
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = ViewModelProviders.of(requireActivity()).get(MainViewModel::class.java)
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(requireActivity()).get(MainViewModel::class.java)
     }
 
     override fun onStart() {
@@ -74,7 +88,6 @@ class MainFragment : Fragment(), AdapterView.OnItemSelectedListener{
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
-        TODO("Not yet implemented")
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
