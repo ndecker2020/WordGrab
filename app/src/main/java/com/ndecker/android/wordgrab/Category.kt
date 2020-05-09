@@ -6,4 +6,4 @@ import java.util.*
 
 @Entity
 data class Category (@PrimaryKey val id: UUID = UUID.randomUUID(),
-                     var name: String)
+                     var name: String = "")

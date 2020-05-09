@@ -29,7 +29,7 @@ class MainFragment : Fragment(), AdapterView.OnItemSelectedListener{
     private lateinit var categorySpinner: Spinner
 
     private val players = listOf(2,4,6,8,10,12)
-    private val categories = listOf("List", "From", "Category", "Repository")
+    private val categories = emptyList<Category>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
@@ -53,8 +53,8 @@ class MainFragment : Fragment(), AdapterView.OnItemSelectedListener{
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.categoriesLiveData.observe(viewLifecycleOwner,
-            Observer<List<Category>> {
-                categorySpinner.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, it)
+            Observer {categories ->
+                categorySpinner.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, categories.map { it.name })
             })
     }
 
@@ -97,7 +97,7 @@ class MainFragment : Fragment(), AdapterView.OnItemSelectedListener{
             playersSpinner ->
                 Toast.makeText(requireContext(), "${players[position]} Players", Toast.LENGTH_SHORT).show()
             else ->
-                Toast.makeText(requireContext(), "${categories[position]} Selected", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "${viewModel.categoriesLiveData.value?.get(position)} Selected", Toast.LENGTH_SHORT).show()
         }
     }
 }
