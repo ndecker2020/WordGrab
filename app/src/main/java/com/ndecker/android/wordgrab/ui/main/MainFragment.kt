@@ -22,6 +22,7 @@ class MainFragment : Fragment(), AdapterView.OnItemSelectedListener{
     private lateinit var playButton: Button
     private lateinit var settingsButton: Button
     private lateinit var createAListButton: Button
+    private lateinit var instructionsButton: Button
     private lateinit var playersSpinner: Spinner
     private lateinit var categorySpinner: Spinner
 
@@ -35,6 +36,7 @@ class MainFragment : Fragment(), AdapterView.OnItemSelectedListener{
         playButton = view.findViewById(R.id.playButton)
         settingsButton = view.findViewById(R.id.settingsButton)
         createAListButton = view.findViewById(R.id.customListButton)
+        instructionsButton = view.findViewById(R.id.instructionsButton)
         playersSpinner = view.findViewById(R.id.playersSpinner)
         categorySpinner = view.findViewById(R.id.categorySpinner)
 
@@ -43,7 +45,6 @@ class MainFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
         categorySpinner.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, categories)
         categorySpinner.onItemSelectedListener = this
-
         return view
     }
 
@@ -65,6 +66,10 @@ class MainFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
         settingsButton.setOnClickListener {
             findNavController().navigate(R.id.action_mainFragment_to_settingsFragment)
+        }
+
+        instructionsButton.setOnClickListener {
+            findNavController().navigate(R.id.action_mainFragment_to_instructions2)
         }
     }
 

@@ -8,6 +8,7 @@
         android:summary="Time for each round."
         android:defaultValue="30"
         android:inputType="number"
+        android:digits="0123456789"
         android:text="30"/>
 
     <SwitchPreference
