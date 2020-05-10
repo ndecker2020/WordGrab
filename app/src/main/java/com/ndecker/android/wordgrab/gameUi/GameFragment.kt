@@ -3,12 +3,14 @@ package com.ndecker.android.wordgrab.gameUi
 import androidx.fragment.app.Fragment
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.navigation.fragment.navArgs
 
 import com.ndecker.android.wordgrab.R
 
@@ -25,7 +27,6 @@ class GameFragment: Fragment() {
     private var countDownTime:Long = 10000
 
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -40,6 +41,16 @@ class GameFragment: Fragment() {
         teamTwoPoints = view.findViewById(R.id.team_two_points)
         return view
 
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        //TODO use game arguments from main menu
+        //here is how to get them, maybe save them in the viewmodel?
+        arguments?.let {
+            Log.d("GameFragment", "Category: " + GameFragmentArgs.fromBundle(requireArguments()).category)
+            Log.d("GameFragment", "Players: " + GameFragmentArgs.fromBundle(requireArguments()).players)
+        }
     }
 
     override fun onStart() {

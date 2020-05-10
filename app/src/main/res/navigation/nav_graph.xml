@@ -26,7 +26,14 @@
     <fragment
         android:id="@+id/gameFragment"
         android:name="com.ndecker.android.wordgrab.gameUi.GameFragment"
-        android:label="GameFragment" />
+        android:label="GameFragment" >
+        <argument
+            android:name="category"
+            app:argType="string" />
+        <argument
+            android:name="players"
+            app:argType="integer" />
+    </fragment>
     <fragment
         android:id="@+id/customListFragment"
         android:name="com.ndecker.android.wordgrab.customList.CustomListFragment"

@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.ndecker.android.wordgrab.Category
@@ -63,15 +64,22 @@ class MainFragment : Fragment(), AdapterView.OnItemSelectedListener{
         viewModel = ViewModelProviders.of(requireActivity()).get(MainViewModel::class.java)
     }
 
+    override fun onResume() {
+        super.onResume()
+        categorySpinner.setSelection(viewModel.selectedCategory)
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
     }
 
     override fun onStart() {
         super.onStart()
-        //set click listeners
         playButton.setOnClickListener {
-            findNavController().navigate(R.id.action_mainFragment_to_gameFragment)
+            val players = (viewModel.selectedPlayers+1)*2
+            val category = viewModel.categoriesLiveData.value!![viewModel.selectedCategory].name
+            val action = MainFragmentDirections.actionMainFragmentToGameFragment(category, players)
+            findNavController().navigate(action)
         }
 
         createAListButton.setOnClickListener {
@@ -88,16 +96,25 @@ class MainFragment : Fragment(), AdapterView.OnItemSelectedListener{
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
+        playButton.isEnabled = false
+        when(parent){
+            playersSpinner ->
+                viewModel.selectedPlayers = -1
+            else ->
+                viewModel.selectedCategory = -1
+        }
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         //number of players changed
+        if(viewModel.selectedPlayers != 0 || viewModel.selectedCategory != 0)
+            playButton.isEnabled = true
         view ?: return
         when(parent){
             playersSpinner ->
-                Toast.makeText(requireContext(), "${players[position]} Players", Toast.LENGTH_SHORT).show()
+                viewModel.selectedPlayers = position
             else ->
-                Toast.makeText(requireContext(), "${viewModel.categoriesLiveData.value?.get(position)} Selected", Toast.LENGTH_SHORT).show()
+                viewModel.selectedCategory = position
         }
     }
 }
