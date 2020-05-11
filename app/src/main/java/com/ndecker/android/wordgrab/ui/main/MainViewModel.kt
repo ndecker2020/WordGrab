@@ -7,6 +7,6 @@ import com.ndecker.android.wordgrab.categoryDatabase.CategoryRepository
 class MainViewModel : ViewModel() {
     private val categoryRepository = CategoryRepository.get()
     val categoriesLiveData = categoryRepository.getCategories()
-    var selectedPlayers = 0;
+    var selectedScore = 0;
     var selectedCategory = 0;
 }

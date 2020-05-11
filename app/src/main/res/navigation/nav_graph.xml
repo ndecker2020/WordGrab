@@ -31,8 +31,12 @@
             android:name="category"
             app:argType="string" />
         <argument
-            android:name="players"
+            android:name="score"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_gameFragment_to_winFragment"
+            app:destination="@id/winFragment"
+            app:popUpTo="@id/mainFragment" />
     </fragment>
     <fragment
         android:id="@+id/customListFragment"
@@ -48,4 +52,13 @@
         android:id="@+id/settingsFragment"
         android:name="com.ndecker.android.wordgrab.ui.settings.SettingsFragment"
         android:label="SettingsFragment" />
+    <fragment
+        android:id="@+id/winFragment"
+        android:name="com.ndecker.android.wordgrab.ui.win.WinFragment"
+        android:label="fragment_win"
+        tools:layout="@layout/fragment_win" >
+        <argument
+            android:name="winner"
+            app:argType="string" />
+    </fragment>
 </navigation>
