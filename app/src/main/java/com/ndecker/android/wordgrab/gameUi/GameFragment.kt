@@ -20,8 +20,10 @@ class GameFragment: Fragment() {
     private lateinit var nextWordButton: Button
     private lateinit var hintButton: Button
     private lateinit var wordText: TextView
-    private lateinit var teamOnePoints: TextView
-    private lateinit var teamTwoPoints: TextView
+    private lateinit var teamOnePoints: Button
+    private lateinit var teamTwoPoints: Button
+    private var teamOneScore =0
+    private var teamTwoScore = 0
 
     private var timesUp: Boolean=true
     private var countDownTime:Long = 10000
@@ -37,8 +39,9 @@ class GameFragment: Fragment() {
         nextWordButton = view.findViewById(R.id.next_word_button)
         hintButton = view.findViewById(R.id.hint_button)
         wordText = view.findViewById(R.id.word_view)
-        teamOnePoints = view.findViewById(R.id.team_one)
-        teamTwoPoints = view.findViewById(R.id.team_two_points)
+        teamOnePoints=view.findViewById(R.id.team_one_points)
+        teamTwoPoints=view.findViewById(R.id.team_two_points)
+
         return view
 
     }
@@ -49,7 +52,7 @@ class GameFragment: Fragment() {
         //here is how to get them, maybe save them in the viewmodel?
         arguments?.let {
             Log.d("GameFragment", "Category: " + GameFragmentArgs.fromBundle(requireArguments()).category)
-            Log.d("GameFragment", "Players: " + GameFragmentArgs.fromBundle(requireArguments()).players)
+           // Log.d("GameFragment", "Players: " + GameFragmentArgs.fromBundle(requireArguments()).players)
         }
     }
 
@@ -70,6 +73,8 @@ class GameFragment: Fragment() {
             isEnabled = timesUp
             setOnClickListener {
                 timesUp = false
+                teamOnePoints.isEnabled=false
+                teamTwoPoints.isEnabled=false
                 timer.start()
 
             }
@@ -83,7 +88,24 @@ class GameFragment: Fragment() {
 
             override fun onFinish() {
                 timesUp=true
+                teamOnePoints.isEnabled=true
+                teamTwoPoints.isEnabled=true
+
+                teamOnePoints.setOnClickListener {
+                    teamOneScore += 1
+                    teamOnePoints.text="Team 1: $teamOneScore"
+                    teamOnePoints.isEnabled=false
+                    teamTwoPoints.isEnabled=false
+
+                }
+                teamTwoPoints.setOnClickListener {
+                    teamTwoScore += 1
+                    teamTwoPoints.text="Team 2: $teamTwoScore"
+                    teamOnePoints.isEnabled=false
+                    teamTwoPoints.isEnabled=false
+                }
                 Toast.makeText(context,"time is up",Toast.LENGTH_SHORT).show()
+
 
 
 

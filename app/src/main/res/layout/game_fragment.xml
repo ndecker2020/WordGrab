@@ -52,8 +52,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/next_word_button" />
 
-    <TextView
-        android:id="@+id/team_one"
+    <Button
+        android:id="@+id/team_one_points"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -63,7 +63,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/hint_button" />
 
-    <TextView
+    <Button
         android:id="@+id/team_two_points"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
