@@ -5,6 +5,6 @@ import androidx.room.PrimaryKey
 import java.util.*
 
 @Entity
-data class Word(@PrimaryKey val id: UUID = UUID.randomUUID(),
+data class Word(@PrimaryKey val id: UUID,
                 var word: String,
                 var category: String)

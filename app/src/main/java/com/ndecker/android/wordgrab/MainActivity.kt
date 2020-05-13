@@ -3,7 +3,7 @@ package com.ndecker.android.wordgrab
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.ndecker.android.wordgrab.categoryDatabase.CategoryRepository
-import com.ndecker.android.wordgrab.ui.main.MainFragment
+import com.ndecker.android.wordgrab.wordDatabase.WordRepository
 
 class MainActivity : AppCompatActivity() {
 
@@ -12,5 +12,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.main_activity)
 
         CategoryRepository.initialize(this)
+        WordRepository.initialize(this)
     }
 }

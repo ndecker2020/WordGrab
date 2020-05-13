@@ -5,5 +5,4 @@ import androidx.room.PrimaryKey
 import java.util.*
 
 @Entity
-data class Category (@PrimaryKey val id: UUID = UUID.randomUUID(),
-                     var name: String = "")
+data class Category (@PrimaryKey val name: String)
