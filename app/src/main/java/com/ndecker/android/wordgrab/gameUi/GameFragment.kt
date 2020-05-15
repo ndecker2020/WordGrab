@@ -7,12 +7,16 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
 
 import com.ndecker.android.wordgrab.R
+import kotlinx.android.synthetic.main.main_fragment.*
 
 
 class GameFragment: Fragment() {
@@ -24,6 +28,7 @@ class GameFragment: Fragment() {
     private lateinit var teamTwoPoints: Button
     private var teamOneScore =0
     private var teamTwoScore = 0
+    private lateinit var viewModel: GameViewModel
 
     private var timesUp: Boolean=true
     private var countDownTime:Long = 10000
@@ -46,6 +51,11 @@ class GameFragment: Fragment() {
 
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = ViewModelProviders.of(requireActivity()).get(GameViewModel::class.java)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //TODO use game arguments from main menu
@@ -54,10 +64,19 @@ class GameFragment: Fragment() {
             Log.d("GameFragment", "Category: " + GameFragmentArgs.fromBundle(requireArguments()).category)
            // Log.d("GameFragment", "Players: " + GameFragmentArgs.fromBundle(requireArguments()).players)
         }
+        viewModel.categoriesLiveData.observe(viewLifecycleOwner,
+            Observer { categories -> arguments
+            })
     }
 
     override fun onStart() {
         super.onStart()
+        teamOnePoints.text= getString(R.string.team_1_points,teamOneScore)
+        teamTwoPoints.text= getString(R.string.team_2_points,teamTwoScore)
+        nextWordButton.isEnabled =false
+        teamTwoPoints.isEnabled = false
+        teamOnePoints.isEnabled = false
+        hintButton.isEnabled = false
         nextWordButton.setOnClickListener{
             //get word from database and change wordText
             if (wordText.text =="oldWord"){
@@ -70,11 +89,14 @@ class GameFragment: Fragment() {
 
         }
         nextRoundButton.apply {
+
             isEnabled = timesUp
             setOnClickListener {
                 timesUp = false
                 teamOnePoints.isEnabled=false
                 teamTwoPoints.isEnabled=false
+                nextWordButton.isEnabled=true
+                hintButton.isEnabled = true
                 timer.start()
 
             }
@@ -88,19 +110,20 @@ class GameFragment: Fragment() {
 
             override fun onFinish() {
                 timesUp=true
+                nextWordButton.isEnabled=false
                 teamOnePoints.isEnabled=true
                 teamTwoPoints.isEnabled=true
 
                 teamOnePoints.setOnClickListener {
                     teamOneScore += 1
-                    teamOnePoints.text="Team 1: $teamOneScore"
+                    teamOnePoints.text= getString(R.string.team_1_points,teamOneScore)
                     teamOnePoints.isEnabled=false
                     teamTwoPoints.isEnabled=false
 
                 }
                 teamTwoPoints.setOnClickListener {
                     teamTwoScore += 1
-                    teamTwoPoints.text="Team 2: $teamTwoScore"
+                    teamTwoPoints.text= getString(R.string.team_2_points,teamTwoScore)
                     teamOnePoints.isEnabled=false
                     teamTwoPoints.isEnabled=false
                 }
