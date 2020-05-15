@@ -12,6 +12,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.Observer
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
 
@@ -32,6 +33,7 @@ class GameFragment: Fragment() {
 
     private var timesUp: Boolean=true
     private var countDownTime:Long = 10000
+
 
 
     override fun onCreateView(
@@ -61,9 +63,12 @@ class GameFragment: Fragment() {
         //TODO use game arguments from main menu
         //here is how to get them, maybe save them in the viewmodel?
         arguments?.let {
-            Log.d("GameFragment", "Category: " + GameFragmentArgs.fromBundle(requireArguments()).category)
+            viewModel.selectedCategoryString = GameFragmentArgs.fromBundle(requireArguments()).category
+            Log.d("GameFragment", "Category: " + viewModel.selectedCategoryString)
            // Log.d("GameFragment", "Players: " + GameFragmentArgs.fromBundle(requireArguments()).players)
         }
+        viewModel.getWords(viewModel.selectedCategoryString) //Now the viewModel is filled with the words
+
         viewModel.categoriesLiveData.observe(viewLifecycleOwner,
             Observer { categories -> arguments
             })
@@ -78,15 +83,16 @@ class GameFragment: Fragment() {
         teamOnePoints.isEnabled = false
         hintButton.isEnabled = false
         nextWordButton.setOnClickListener{
-            //get word from database and change wordText
+
+
+            /*get word from database and change wordText
             if (wordText.text =="oldWord"){
                 wordText.text = "newWord"
             }
             else{
                 wordText.text ="oldWord"
             }
-
-
+            */
         }
         nextRoundButton.apply {
 
