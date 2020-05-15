@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.ndecker.android.wordgrab.Category
 import com.ndecker.android.wordgrab.R
+import java.util.*
 
 class MainFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
@@ -40,7 +41,7 @@ class MainFragment : Fragment(), AdapterView.OnItemSelectedListener{
         scoreSpinner = view.findViewById(R.id.scoreSpinner)
         categorySpinner = view.findViewById(R.id.categorySpinner)
 
-        scoreSpinner.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, listOf(2..10))
+        scoreSpinner.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, listOf(2,4,6,8,10))
         scoreSpinner.onItemSelectedListener = this
 
         categorySpinner.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, categories)

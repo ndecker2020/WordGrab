@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <EditTextPreference
-        app:key="gameTime"
+        app:key="@string/game_time_key"
         android:title="Time Limit"
         android:summary="Time for each round."
         android:defaultValue="30"
@@ -12,13 +12,13 @@
         android:text="30"/>
 
     <SwitchPreference
-        app:key="shakeToSkip"
+        app:key="@string/shake_enabled_key"
         android:defaultValue="false"
         android:title="Shake"
         android:summary="Enable shaking to skip the current word."/>
 
     <CheckBoxPreference
-        app:key="allowSkip"
+        app:key="@string/allow_skip_key"
         android:defaultValue="true"
         android:title="Skip"
         android:summary="Allow skipping words."/>
