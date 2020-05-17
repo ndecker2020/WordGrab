@@ -11,7 +11,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-private const val baseUrl = "base url to the api"
+private const val baseUrl = "https://wordsapiv1.p.rapidapi.com/"
 
 class DefinitionRepository {
     private val wordsApi: WordsApi
@@ -25,14 +25,14 @@ class DefinitionRepository {
         wordsApi = retrofit.create(WordsApi::class.java)
     }
 
-    fun getDefintions(word: String): LiveData<WordsApiResponse>{
+    fun getDefinitions(word: String): LiveData<WordsApiResponse>{
         val responseLiveData: MutableLiveData<WordsApiResponse> = MutableLiveData()
         val definitionCall: Call<WordsApiResponse> = wordsApi.getDefinitions(word)
 
         definitionCall.enqueue(object: Callback<WordsApiResponse>{
             override fun onFailure(call: Call<WordsApiResponse>, t: Throwable) {
 
-                //TODO return some error definition response
+                responseLiveData.value = WordsApiResponse.errorResponse()
 
                 Log.e("DefinitionRepository", "Error fetching definitions")
             }

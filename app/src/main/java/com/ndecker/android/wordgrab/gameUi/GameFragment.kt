@@ -14,9 +14,11 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 
 import com.ndecker.android.wordgrab.R
+import com.ndecker.android.wordgrab.ui.main.MainFragmentDirections
 import kotlinx.android.synthetic.main.main_fragment.*
 
 
@@ -79,6 +81,11 @@ class GameFragment: Fragment() {
         viewModel.categoriesLiveData.observe(viewLifecycleOwner,
             Observer { categories -> arguments
             })
+
+        viewModel.hintLiveData.observe(viewLifecycleOwner, Observer {
+            if(it == null || it.definitions.isNullOrEmpty()) return@Observer
+            hintTextView.text = it.definitions.first().definition
+        })
     }
 
     override fun onStart() {
@@ -107,6 +114,11 @@ class GameFragment: Fragment() {
                 restartRound()
 
             }
+        }
+
+        hintButton.setOnClickListener {
+            //TODO use the current word here
+            viewModel.loadDefinition("Skydive")
         }
 
     }
@@ -149,9 +161,6 @@ class GameFragment: Fragment() {
         timeLeft = 10000
         countDownTime = timeLeft
 
-
-
-
     }
 
     override fun onPause() {
@@ -174,6 +183,13 @@ class GameFragment: Fragment() {
         timer.cancel()
         navigateAway = true
     }
+
+    //just call with the name of the winning team.
+    private fun onTeamWin(team: String){
+        val action = GameFragmentDirections.actionGameFragmentToWinFragment(team)
+        findNavController().navigate(action)
+    }
+
     private var timer:CountDownTimer =
         object : CountDownTimer(timeLeft, 1000) {
             override fun onTick(millisUntilFinished: Long) {
