@@ -16,6 +16,7 @@ class GameViewModel:ViewModel() {
     var selectedCategoryString = ""
     private val wordRepository = WordRepository.get()
     lateinit var wordListLiveData: LiveData<List<Word>>
+
     var currentWord = ""
 
     var categoryLiveData: LiveData<List<Category>> =
@@ -24,6 +25,7 @@ class GameViewModel:ViewModel() {
         }
 
     fun getWords(category: String) {
+        wordListLiveData = wordRepository.getWords(category)
         Transformations.switchMap(wordListLiveData) {
             wordID -> wordRepository.getWords(category)
         }

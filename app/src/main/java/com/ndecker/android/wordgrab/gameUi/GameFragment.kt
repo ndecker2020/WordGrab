@@ -27,12 +27,17 @@ class GameFragment: Fragment() {
     private lateinit var wordText: TextView
     private lateinit var teamOnePoints: Button
     private lateinit var teamTwoPoints: Button
+    private lateinit var skipButton: Button
     private var teamOneScore =0
     private var teamTwoScore = 0
+    private lateinit var hintTextView: TextView
     private lateinit var viewModel: GameViewModel
+    private var navigateAway = false
 
     private var timesUp: Boolean=true
-    private var countDownTime:Long = 10000
+
+    private var timeLeft: Long = 10000
+    private var countDownTime:Long = timeLeft
 
 
 
@@ -48,6 +53,8 @@ class GameFragment: Fragment() {
         wordText = view.findViewById(R.id.word_view)
         teamOnePoints=view.findViewById(R.id.team_one_points)
         teamTwoPoints=view.findViewById(R.id.team_two_points)
+        skipButton = view.findViewById(R.id.skip_button)
+        hintTextView = view.findViewById(R.id.hint_text)
 
         return view
 
@@ -78,10 +85,8 @@ class GameFragment: Fragment() {
         super.onStart()
         teamOnePoints.text= getString(R.string.team_1_points,teamOneScore)
         teamTwoPoints.text= getString(R.string.team_2_points,teamTwoScore)
-        nextWordButton.isEnabled =false
-        teamTwoPoints.isEnabled = false
-        teamOnePoints.isEnabled = false
-        hintButton.isEnabled = false
+
+
         nextWordButton.setOnClickListener{
 
 
@@ -94,50 +99,91 @@ class GameFragment: Fragment() {
             }
             */
         }
+
         nextRoundButton.apply {
 
             isEnabled = timesUp
             setOnClickListener {
-                timesUp = false
-                teamOnePoints.isEnabled=false
-                teamTwoPoints.isEnabled=false
-                nextWordButton.isEnabled=true
-                hintButton.isEnabled = true
-                timer.start()
+                restartRound()
 
             }
         }
 
     }
+
+    fun restartRound(){
+        timer.start()
+        timesUp = false
+        nextWordButton.isEnabled =true
+        skipButton.isEnabled = true
+        hintButton.isEnabled = true
+        nextRoundButton.isEnabled = false
+
+    }
+
+    fun finishedTimer(){
+        timesUp=true
+        nextWordButton.isEnabled=false
+        skipButton.isEnabled=false
+        hintButton.isEnabled=false
+        teamOnePoints.isEnabled=true
+        teamTwoPoints.isEnabled=true
+
+
+        teamOnePoints.setOnClickListener {
+            teamOneScore += 1
+            teamOnePoints.text= getString(R.string.team_1_points,teamOneScore)
+            teamOnePoints.isEnabled=false
+            teamTwoPoints.isEnabled=false
+            nextRoundButton.isEnabled = true
+
+        }
+        teamTwoPoints.setOnClickListener {
+            teamTwoScore += 1
+            teamTwoPoints.text= getString(R.string.team_2_points,teamTwoScore)
+            teamOnePoints.isEnabled=false
+            teamTwoPoints.isEnabled=false
+            nextRoundButton.isEnabled = true
+        }
+        Toast.makeText(context,"time is up",Toast.LENGTH_SHORT).show()
+        timeLeft = 10000
+        countDownTime = timeLeft
+
+
+
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+        timer.cancel()
+        navigateAway=true
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (navigateAway) {
+            Toast.makeText(context, "Round Ended because of screen navigation.", Toast.LENGTH_SHORT)
+                .show()
+        }
+        restartRound()
+    }
+    override fun onStop() {
+        super.onStop()
+        timer.cancel()
+        navigateAway = true
+    }
     private var timer:CountDownTimer =
-        object : CountDownTimer(countDownTime, 1000) {
+        object : CountDownTimer(timeLeft, 1000) {
             override fun onTick(millisUntilFinished: Long) {
+                timeLeft = millisUntilFinished
             }
 
             override fun onFinish() {
-                timesUp=true
-                nextWordButton.isEnabled=false
-                teamOnePoints.isEnabled=true
-                teamTwoPoints.isEnabled=true
-
-                teamOnePoints.setOnClickListener {
-                    teamOneScore += 1
-                    teamOnePoints.text= getString(R.string.team_1_points,teamOneScore)
-                    teamOnePoints.isEnabled=false
-                    teamTwoPoints.isEnabled=false
-
-                }
-                teamTwoPoints.setOnClickListener {
-                    teamTwoScore += 1
-                    teamTwoPoints.text= getString(R.string.team_2_points,teamTwoScore)
-                    teamOnePoints.isEnabled=false
-                    teamTwoPoints.isEnabled=false
-                }
-                Toast.makeText(context,"time is up",Toast.LENGTH_SHORT).show()
-
-
-
-
+                finishedTimer()
             }
+
+
         }
 }
