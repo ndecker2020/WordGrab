@@ -88,7 +88,10 @@ class GameFragment: Fragment() {
             })
 
         viewModel.hintLiveData.observe(viewLifecycleOwner, Observer {
-            if(it == null || it.definitions.isNullOrEmpty()) return@Observer
+            if(it == null || it.definitions.isNullOrEmpty()) {
+                hintTextView.text = ""
+                return@Observer
+            }
             hintTextView.text = it.definitions.first().definition
         })
     }
@@ -111,7 +114,6 @@ class GameFragment: Fragment() {
             isEnabled = timesUp
             setOnClickListener {
                 restartRound()
-
             }
         }
 
@@ -137,7 +139,6 @@ class GameFragment: Fragment() {
         skipButton.isEnabled = true
         hintButton.isEnabled = true
         nextRoundButton.isEnabled = false
-
     }
 
     fun finishedTimer(){
@@ -189,6 +190,8 @@ class GameFragment: Fragment() {
         super.onStop()
         timer.cancel()
         navigateAway = true
+        viewModel.clearDefinition()
+        hintTextView.text = ""
     }
 
     //just call with the name of the winning team.
@@ -206,7 +209,5 @@ class GameFragment: Fragment() {
             override fun onFinish() {
                 finishedTimer()
             }
-
-
         }
 }
