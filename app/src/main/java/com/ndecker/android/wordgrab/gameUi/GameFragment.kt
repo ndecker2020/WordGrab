@@ -20,6 +20,7 @@ import androidx.navigation.fragment.navArgs
 import com.ndecker.android.wordgrab.R
 import com.ndecker.android.wordgrab.ui.main.MainFragmentDirections
 import kotlinx.android.synthetic.main.main_fragment.*
+import kotlin.random.Random
 
 
 class GameFragment: Fragment() {
@@ -70,13 +71,17 @@ class GameFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //TODO use game arguments from main menu
-        //here is how to get them, maybe save them in the viewmodel?
+        //here is how to get them, maybe save them in the viewModel?
         arguments?.let {
-            viewModel.selectedCategoryString = GameFragmentArgs.fromBundle(requireArguments()).category
+            viewModel.setUpWords(GameFragmentArgs.fromBundle(requireArguments()).category)
             Log.d("GameFragment", "Category: " + viewModel.selectedCategoryString)
            // Log.d("GameFragment", "Players: " + GameFragmentArgs.fromBundle(requireArguments()).players)
         }
-        viewModel.getWords(viewModel.selectedCategoryString) //Now the viewModel is filled with the words
+
+        viewModel.wordsLiveData.observe(viewLifecycleOwner,
+            Observer {
+                newWord -> viewModel.currentWord = newWord[Random.nextInt(0, newWord.size)].word
+            })
 
         viewModel.categoriesLiveData.observe(viewLifecycleOwner,
             Observer { categories -> arguments
@@ -93,22 +98,16 @@ class GameFragment: Fragment() {
         teamOnePoints.text= getString(R.string.team_1_points,teamOneScore)
         teamTwoPoints.text= getString(R.string.team_2_points,teamTwoScore)
 
-
         nextWordButton.setOnClickListener{
 
-
-            /*get word from database and change wordText
-            if (wordText.text =="oldWord"){
-                wordText.text = "newWord"
-            }
-            else{
-                wordText.text ="oldWord"
-            }
-            */
+            viewModel.wordsLiveData.observe(viewLifecycleOwner,
+                Observer {
+                        newWord -> viewModel.currentWord = newWord[Random.nextInt(0, newWord.size)].word
+                })
+            wordText.text = viewModel.currentWord
         }
 
         nextRoundButton.apply {
-
             isEnabled = timesUp
             setOnClickListener {
                 restartRound()
@@ -116,9 +115,17 @@ class GameFragment: Fragment() {
             }
         }
 
+        skipButton.setOnClickListener {
+            viewModel.wordsLiveData.observe(viewLifecycleOwner,
+                Observer {
+                        newWord -> viewModel.currentWord = newWord[Random.nextInt(0, newWord.size)].word
+                })
+            wordText.text = viewModel.currentWord
+        }
+
         hintButton.setOnClickListener {
             //TODO use the current word here
-            viewModel.loadDefinition("Skydive")
+            viewModel.loadDefinition(viewModel.currentWord)
         }
 
     }
