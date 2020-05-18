@@ -1,5 +1,7 @@
 package com.ndecker.android.wordgrab.gameUi
 
+import android.app.Activity
+import android.content.Context
 import androidx.fragment.app.Fragment
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -16,8 +18,10 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.ndecker.android.wordgrab.MainActivity
 
 import com.ndecker.android.wordgrab.R
+import com.ndecker.android.wordgrab.ui.main.MainFragment
 import com.ndecker.android.wordgrab.ui.main.MainFragmentDirections
 import kotlinx.android.synthetic.main.main_fragment.*
 import kotlin.random.Random
@@ -30,20 +34,16 @@ class GameFragment: Fragment() {
     private lateinit var wordText: TextView
     private lateinit var teamOnePoints: Button
     private lateinit var teamTwoPoints: Button
-    private lateinit var skipButton: Button
+
     private var teamOneScore =0
     private var teamTwoScore = 0
     private lateinit var hintTextView: TextView
     private lateinit var viewModel: GameViewModel
     private var navigateAway = false
-
+    private  var scoreLimit=0
     private var timesUp: Boolean=true
 
-    private var timeLeft: Long = 10000
-    private var countDownTime:Long = timeLeft
-
-
-
+    val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -56,7 +56,7 @@ class GameFragment: Fragment() {
         wordText = view.findViewById(R.id.word_view)
         teamOnePoints=view.findViewById(R.id.team_one_points)
         teamTwoPoints=view.findViewById(R.id.team_two_points)
-        skipButton = view.findViewById(R.id.skip_button)
+
         hintTextView = view.findViewById(R.id.hint_text)
 
         return view
@@ -76,9 +76,12 @@ class GameFragment: Fragment() {
             viewModel.setUpWords(GameFragmentArgs.fromBundle(requireArguments()).category)
             Log.d("GameFragment", "Category: " + viewModel.selectedCategoryString)
            // Log.d("GameFragment", "Players: " + GameFragmentArgs.fromBundle(requireArguments()).players)
-        }
 
-        viewModel.wordsLiveData.observe(viewLifecycleOwner,
+        }
+        scoreLimit = GameFragmentArgs.fromBundle(requireArguments()).score*2
+
+
+            viewModel.wordsLiveData.observe(viewLifecycleOwner,
             Observer {
                 newWord -> viewModel.currentWord = newWord[Random.nextInt(0, newWord.size)].word
             })
@@ -98,6 +101,9 @@ class GameFragment: Fragment() {
 
     override fun onStart() {
         super.onStart()
+
+
+
         teamOnePoints.text= getString(R.string.team_1_points,teamOneScore)
         teamTwoPoints.text= getString(R.string.team_2_points,teamTwoScore)
 
@@ -117,13 +123,6 @@ class GameFragment: Fragment() {
             }
         }
 
-        skipButton.setOnClickListener {
-            viewModel.wordsLiveData.observe(viewLifecycleOwner,
-                Observer {
-                        newWord -> viewModel.currentWord = newWord[Random.nextInt(0, newWord.size)].word
-                })
-            wordText.text = viewModel.currentWord
-        }
 
         hintButton.setOnClickListener {
             //TODO use the current word here
@@ -132,11 +131,11 @@ class GameFragment: Fragment() {
 
     }
 
-    fun restartRound(){
+    private fun restartRound(){
         timer.start()
         timesUp = false
         nextWordButton.isEnabled =true
-        skipButton.isEnabled = true
+
         hintButton.isEnabled = true
         nextRoundButton.isEnabled = false
     }
@@ -144,7 +143,7 @@ class GameFragment: Fragment() {
     fun finishedTimer(){
         timesUp=true
         nextWordButton.isEnabled=false
-        skipButton.isEnabled=false
+
         hintButton.isEnabled=false
         teamOnePoints.isEnabled=true
         teamTwoPoints.isEnabled=true
@@ -152,6 +151,9 @@ class GameFragment: Fragment() {
 
         teamOnePoints.setOnClickListener {
             teamOneScore += 1
+            if (teamOneScore>= scoreLimit){
+                onTeamWin(getString(R.string.team_one_win))
+            }
             teamOnePoints.text= getString(R.string.team_1_points,teamOneScore)
             teamOnePoints.isEnabled=false
             teamTwoPoints.isEnabled=false
@@ -160,14 +162,17 @@ class GameFragment: Fragment() {
         }
         teamTwoPoints.setOnClickListener {
             teamTwoScore += 1
+            if (teamTwoScore>=scoreLimit){
+                onTeamWin(getString(R.string.team_two_win))
+            }
             teamTwoPoints.text= getString(R.string.team_2_points,teamTwoScore)
             teamOnePoints.isEnabled=false
             teamTwoPoints.isEnabled=false
             nextRoundButton.isEnabled = true
         }
         Toast.makeText(context,"time is up",Toast.LENGTH_SHORT).show()
-        timeLeft = 10000
-        countDownTime = timeLeft
+
+
 
     }
 
@@ -201,9 +206,9 @@ class GameFragment: Fragment() {
     }
 
     private var timer:CountDownTimer =
-        object : CountDownTimer(timeLeft, 1000) {
+        object : CountDownTimer(30000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
-                timeLeft = millisUntilFinished
+
             }
 
             override fun onFinish() {
