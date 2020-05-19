@@ -37,4 +37,6 @@
     <string name="game_time_key">gameTime</string>
     <string name="shake_enabled_key">shakeToSkip</string>
     <string name="allow_skip_key">allowSkip</string>
+    <string name="team_two_win">Team 2</string>
+    <string name="team_one_win">Team One</string>
 </resources>
