@@ -9,7 +9,7 @@ import com.ndecker.android.wordgrab.Word
 import com.ndecker.android.wordgrab.categoryDatabase.CategoryRepository
 import com.ndecker.android.wordgrab.retrofit.DefinitionRepository
 import com.ndecker.android.wordgrab.wordDatabase.WordRepository
-import kotlin.random.Random
+import java.util.ArrayDeque
 
 class GameViewModel:ViewModel() {
     private val categoryRepository = CategoryRepository.get()
@@ -17,6 +17,7 @@ class GameViewModel:ViewModel() {
     var selectedScore = 0
     var selectedCategory = 0
     var selectedCategoryString = ""
+    var wordsStack = ArrayDeque<Word>()
     private val wordRepository = WordRepository.get()
     lateinit var wordListLiveData: LiveData<List<Word>>
 
@@ -45,6 +46,10 @@ class GameViewModel:ViewModel() {
         //since we don't have the category until the view is created, we can't get the words til now
         selectedCategoryString = category
         wordsLiveData = wordRepository.getWords(category)
+    }
+
+    fun setUpList(words : List<Word>) {
+        wordsStack.addAll(words)
     }
 
     fun loadDefinition(word: String){

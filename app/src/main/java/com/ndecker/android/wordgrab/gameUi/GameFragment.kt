@@ -79,8 +79,10 @@ class GameFragment: Fragment() {
         }
 
         viewModel.wordsLiveData.observe(viewLifecycleOwner,
-            Observer {
-                newWord -> viewModel.currentWord = newWord[Random.nextInt(0, newWord.size)].word
+            Observer { newWord ->
+                viewModel.setUpList(newWord)
+                viewModel.currentWord = viewModel.wordsStack.pop().word
+                wordText.text = viewModel.currentWord
             })
 
         viewModel.categoriesLiveData.observe(viewLifecycleOwner,
@@ -102,11 +104,13 @@ class GameFragment: Fragment() {
         teamTwoPoints.text= getString(R.string.team_2_points,teamTwoScore)
 
         nextWordButton.setOnClickListener{
-
-            viewModel.wordsLiveData.observe(viewLifecycleOwner,
-                Observer {
-                        newWord -> viewModel.currentWord = newWord[Random.nextInt(0, newWord.size)].word
-                })
+            if(viewModel.wordsStack.isEmpty()) {
+                viewModel.wordsLiveData.observe(viewLifecycleOwner,
+                    Observer { newWordList ->
+                        viewModel.setUpList(newWordList.shuffled())
+                    })
+            }
+            viewModel.currentWord = viewModel.wordsStack.pop().word
             wordText.text = viewModel.currentWord
         }
 
@@ -118,10 +122,13 @@ class GameFragment: Fragment() {
         }
 
         skipButton.setOnClickListener {
-            viewModel.wordsLiveData.observe(viewLifecycleOwner,
-                Observer {
-                        newWord -> viewModel.currentWord = newWord[Random.nextInt(0, newWord.size)].word
-                })
+            if(viewModel.wordsStack.isEmpty()) {
+                viewModel.wordsLiveData.observe(viewLifecycleOwner,
+                    Observer { newWordList ->
+                        viewModel.setUpList(newWordList.shuffled())
+                    })
+            }
+            viewModel.currentWord = viewModel.wordsStack.pop().word
             wordText.text = viewModel.currentWord
         }
 
