@@ -22,6 +22,7 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.preference.PreferenceManager
 import com.ndecker.android.wordgrab.MainActivity
 
 import com.ndecker.android.wordgrab.R
@@ -53,7 +54,8 @@ class GameFragment: Fragment(), SensorEventListener2{
     private val shakeSensitivity = 30.0
     private var lastShake: Long = 0
 
-    val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
+    private var shakeToSkip = false
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -80,6 +82,9 @@ class GameFragment: Fragment(), SensorEventListener2{
         sensorManager = requireContext().getSystemService(Context.SENSOR_SERVICE) as SensorManager
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION)
         sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME)
+
+        val sharedPref = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        shakeToSkip = sharedPref.getBoolean(getString(R.string.shake_enabled_key), false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -246,6 +251,8 @@ class GameFragment: Fragment(), SensorEventListener2{
 
     override fun onSensorChanged(event: SensorEvent?) {
         //when the accelerometer has a change
+        //return if shaking is disabled
+        if(!shakeToSkip) return
         //return if something is empty
         if(event?.sensor == null) return
         //if no magnitudes are more than the threshold then ignore the motion

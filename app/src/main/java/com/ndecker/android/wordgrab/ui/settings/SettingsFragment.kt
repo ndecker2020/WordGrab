@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.main_fragment.view.*
 class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.settings_screen, rootKey)
-        findPreference<EditTextPreference>("gameTime")?.apply{
+        findPreference<EditTextPreference>(getString(R.string.game_time_key))?.apply{
             summaryProvider = Preference.SummaryProvider<EditTextPreference> { preference ->
                 if(preference.text.isEmpty()) "Not Set" else preference.text + " seconds"
             }
