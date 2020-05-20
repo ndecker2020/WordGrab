@@ -6,6 +6,7 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener2
 import android.hardware.SensorManager
+import android.opengl.Visibility
 import androidx.fragment.app.Fragment
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -70,6 +71,7 @@ class GameFragment: Fragment(), SensorEventListener2{
         teamTwoPoints=view.findViewById(R.id.team_two_points)
 
         hintTextView = view.findViewById(R.id.hint_text)
+        hintTextView.visibility = View.INVISIBLE
 
         return view
 
@@ -143,6 +145,7 @@ class GameFragment: Fragment(), SensorEventListener2{
         hintButton.setOnClickListener {
             //TODO use the current word here
             viewModel.loadDefinition(viewModel.currentWord)
+            hintTextView.visibility = View.VISIBLE
         }
 
     }
@@ -156,6 +159,8 @@ class GameFragment: Fragment(), SensorEventListener2{
         }
         viewModel.currentWord = viewModel.wordsStack.pop().word
         wordText.text = viewModel.currentWord
+
+        viewModel.clearDefinition()
     }
 
     private fun restartRound(){
