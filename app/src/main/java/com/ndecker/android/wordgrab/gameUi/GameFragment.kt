@@ -2,6 +2,10 @@ package com.ndecker.android.wordgrab.gameUi
 
 import android.app.Activity
 import android.content.Context
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener2
+import android.hardware.SensorManager
 import androidx.fragment.app.Fragment
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -24,10 +28,11 @@ import com.ndecker.android.wordgrab.R
 import com.ndecker.android.wordgrab.ui.main.MainFragment
 import com.ndecker.android.wordgrab.ui.main.MainFragmentDirections
 import kotlinx.android.synthetic.main.main_fragment.*
+import kotlin.math.abs
 import kotlin.random.Random
 
 
-class GameFragment: Fragment() {
+class GameFragment: Fragment(), SensorEventListener2{
     private lateinit var nextRoundButton: Button
     private lateinit var nextWordButton: Button
     private lateinit var hintButton: Button
@@ -42,6 +47,11 @@ class GameFragment: Fragment() {
     private var navigateAway = false
     private  var scoreLimit=0
     private var timesUp: Boolean=true
+
+    private lateinit var sensorManager: SensorManager
+    private lateinit var accelerometer: Sensor
+    private val shakeSensitivity = 30.0
+    private var lastShake: Long = 0
 
     val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
     override fun onCreateView(
@@ -66,6 +76,10 @@ class GameFragment: Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(requireActivity()).get(GameViewModel::class.java)
+
+        sensorManager = requireContext().getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION)
+        sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_GAME)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -110,14 +124,7 @@ class GameFragment: Fragment() {
         teamTwoPoints.text= getString(R.string.team_2_points,teamTwoScore)
 
         nextWordButton.setOnClickListener{
-            if(viewModel.wordsStack.isEmpty()) {
-                viewModel.wordsLiveData.observe(viewLifecycleOwner,
-                    Observer { newWordList ->
-                        viewModel.setUpList(newWordList.shuffled())
-                    })
-            }
-            viewModel.currentWord = viewModel.wordsStack.pop().word
-            wordText.text = viewModel.currentWord
+            nextWord()
         }
 
         nextRoundButton.apply {
@@ -133,6 +140,17 @@ class GameFragment: Fragment() {
             viewModel.loadDefinition(viewModel.currentWord)
         }
 
+    }
+
+    private fun nextWord(){
+        if(viewModel.wordsStack.isEmpty()) {
+            viewModel.wordsLiveData.observe(viewLifecycleOwner,
+                Observer { newWordList ->
+                    viewModel.setUpList(newWordList.shuffled())
+                })
+        }
+        viewModel.currentWord = viewModel.wordsStack.pop().word
+        wordText.text = viewModel.currentWord
     }
 
     private fun restartRound(){
@@ -217,4 +235,24 @@ class GameFragment: Fragment() {
                 finishedTimer()
             }
         }
+
+    override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
+        //unused
+    }
+
+    override fun onFlushCompleted(sensor: Sensor?) {
+        //unused
+    }
+
+    override fun onSensorChanged(event: SensorEvent?) {
+        //when the accelerometer has a change
+        //return if something is empty
+        if(event?.sensor == null) return
+        //if no magnitudes are more than the threshold then ignore the motion
+        if(abs(event.values[0]) < shakeSensitivity && abs(event.values[1]) < shakeSensitivity && abs(event.values[2]) < shakeSensitivity) return
+        //ignore if previous shake was within a second
+        if(System.currentTimeMillis() - lastShake < 1000) return
+        lastShake = System.currentTimeMillis()
+        nextWord()
+    }
 }
