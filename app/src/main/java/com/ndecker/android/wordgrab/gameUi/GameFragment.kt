@@ -90,7 +90,11 @@ class GameFragment: Fragment(), SensorEventListener2{
 
         val sharedPref = PreferenceManager.getDefaultSharedPreferences(requireContext())
         shakeToSkip = sharedPref.getBoolean(getString(R.string.shake_enabled_key), false)
-        numberOfSeconds = sharedPref.getString(getString(R.string.game_time_key),"30")!!.toLong()
+        val temp = sharedPref.getString(getString(R.string.game_time_key),"30")
+        numberOfSeconds = when{
+            temp.isNullOrBlank() -> 30
+            else -> temp!!.toLong()
+        }
 
         timer = object: CountDownTimer(numberOfSeconds*1000, 1000){
             override fun onFinish() {
