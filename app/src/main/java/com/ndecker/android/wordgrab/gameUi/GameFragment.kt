@@ -56,6 +56,8 @@ class GameFragment: Fragment(), SensorEventListener2{
     private var numberOfSeconds:Long = 0
     private var lastShake: Long = 0
 
+    private lateinit var timer: CountDownTimer
+
     private var shakeToSkip = false
 
     override fun onCreateView(
@@ -89,6 +91,16 @@ class GameFragment: Fragment(), SensorEventListener2{
         val sharedPref = PreferenceManager.getDefaultSharedPreferences(requireContext())
         shakeToSkip = sharedPref.getBoolean(getString(R.string.shake_enabled_key), false)
         numberOfSeconds = sharedPref.getString(getString(R.string.game_time_key),"30")!!.toLong()
+
+        timer = object: CountDownTimer(numberOfSeconds*1000, 1000){
+            override fun onFinish() {
+                finishedTimer()
+            }
+
+            override fun onTick(millisUntilFinished: Long) {
+            }
+
+        }
 
     }
 
@@ -237,17 +249,6 @@ class GameFragment: Fragment(), SensorEventListener2{
         val action = GameFragmentDirections.actionGameFragmentToWinFragment(team)
         findNavController().navigate(action)
     }
-
-    private var timer:CountDownTimer =
-        object : CountDownTimer((numberOfSeconds*10000), 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-
-            }
-
-            override fun onFinish() {
-                finishedTimer()
-            }
-        }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
         //unused
