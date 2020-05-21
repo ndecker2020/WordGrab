@@ -8,13 +8,14 @@
     <string name="team_2_points">Team 2: %1$d</string>
     <string name="create_list">Create a List</string>
     <string name="category_name">Category</string>
+
     <string name="enter_word">Enter a Word</string>
     <string name="submit_word">Submit Word!</string>
     <string name="enter_category">Add Your Own Category</string>
     <string name="submit_category">Submit Category!</string>
     <string name="choose_category">Choose a Category</string>
     <string name="instructions_word">Instructions</string>
-    <string name="instructions_details">How to Play\nGet into two teams with the same number of people in a team\nIf there is an odd person out,pair them with someone else and count them as one person. \nSit in a circle with no one from the same team sitting by their own team.\nClick the play button and the round will begin immediately\nAnyone can start with the phone. Their job is to have their teammates guess which word is displayed.\nThe person describing the word can say anything besides a word that is part of the word or something that rhymes with the word.\nWhen their team guesses the word they pass the phone to the right.\nThen the other team does the same. This continues until the time runs out.\nA message will appear onscreen to say when the time is up.\nWhichever team does not have the phone in their hands at this time gets a point.\nThe settings can be adjusted so people can play first team to 2 through 10 points.\n \n\n\n\n\n</string>
+    <string name="instructions_details">How to Play\nTo start the game, please add words to categories using the create a list button\nAdd at least 10 word to a category to have a fun game. \nGet into two teams with the same number of people in a team\nIf there is an odd person out, pair them with someone else and count them as one person. \nSit in a circle with no one from the same team sitting by their own team.\nClick the play button and the round will begin immediately\nAnyone can start with the phone. Their job is to have their teammates guess which word is displayed.\nThe person describing the word can say anything besides a word that is part of the word or something that rhymes with the word.\nWhen their team guesses the word they pass the phone to the right.\nThen the other team does the same. This continues until the time runs out.\nA message will appear onscreen to say when the time is up.\nWhichever team does not have the phone in their hands at this time gets a point.\nThe settings can be adjusted so people can play first team to 2 through 10 points.\nA player may skip a word by using next or get a hint with the hint button\nCheck the settings for other fun options like shake to skip and changing the time limit. \n\n\n\n\n</string>
     <string name="title_name">WordGrab</string>
     <string name="play_button">Play</string>
     <string name="settings_button">Settings</string>
