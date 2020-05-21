@@ -41,7 +41,7 @@ class MainFragment : Fragment(), AdapterView.OnItemSelectedListener{
         scoreSpinner = view.findViewById(R.id.scoreSpinner)
         categorySpinner = view.findViewById(R.id.categorySpinner)
 
-        scoreSpinner.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, listOf(2,4,6,8,10))
+        scoreSpinner.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, listOf(2,3,4,5,6,7,8,9,10))
         scoreSpinner.onItemSelectedListener = this
 
         categorySpinner.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, categories)
@@ -74,7 +74,7 @@ class MainFragment : Fragment(), AdapterView.OnItemSelectedListener{
     override fun onStart() {
         super.onStart()
         playButton.setOnClickListener {
-            val players = (viewModel.selectedScore+1)
+            val players = (viewModel.selectedScore+2)
             val category = viewModel.categoriesLiveData.value!![viewModel.selectedCategory].name
             val action = MainFragmentDirections.actionMainFragmentToGameFragment(category, players)
             findNavController().navigate(action)

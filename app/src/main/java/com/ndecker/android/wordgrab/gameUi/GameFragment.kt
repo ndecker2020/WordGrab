@@ -99,7 +99,7 @@ class GameFragment: Fragment(), SensorEventListener2{
            // Log.d("GameFragment", "Players: " + GameFragmentArgs.fromBundle(requireArguments()).players)
 
         }
-        scoreLimit = GameFragmentArgs.fromBundle(requireArguments()).score*2
+        scoreLimit = GameFragmentArgs.fromBundle(requireArguments()).score
 
 
         viewModel.wordsLiveData.observe(viewLifecycleOwner,
