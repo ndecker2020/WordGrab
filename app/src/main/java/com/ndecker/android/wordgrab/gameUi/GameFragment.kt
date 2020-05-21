@@ -53,6 +53,7 @@ class GameFragment: Fragment(), SensorEventListener2{
     private lateinit var sensorManager: SensorManager
     private lateinit var accelerometer: Sensor
     private val shakeSensitivity = 30.0
+    private var numberOfSeconds:Long = 0
     private var lastShake: Long = 0
 
     private var shakeToSkip = false
@@ -87,6 +88,8 @@ class GameFragment: Fragment(), SensorEventListener2{
 
         val sharedPref = PreferenceManager.getDefaultSharedPreferences(requireContext())
         shakeToSkip = sharedPref.getBoolean(getString(R.string.shake_enabled_key), false)
+        numberOfSeconds = sharedPref.getString(getString(R.string.game_time_key),"30")!!.toLong()
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -236,7 +239,7 @@ class GameFragment: Fragment(), SensorEventListener2{
     }
 
     private var timer:CountDownTimer =
-        object : CountDownTimer(30000, 1000) {
+        object : CountDownTimer((numberOfSeconds*10000), 1000) {
             override fun onTick(millisUntilFinished: Long) {
 
             }
